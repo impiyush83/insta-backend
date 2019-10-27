@@ -1,2 +1,5 @@
-.idea/
-.__pycache__/
+.idea
+*.pyc
+.pytest_cache
+.cache
+.insta_backend/__pycache__/
