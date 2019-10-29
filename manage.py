@@ -1,8 +1,9 @@
 import os
+
 from flask_migrate import MigrateCommand
 from flask_script import Manager, Server
 
-from insta_backend import create_app
+from insta_backend.app import create_app
 from insta_backend.config import DevConfig, ProdConfig, TestConfig
 
 env = os.environ.get("INSTA_ENV").lower()

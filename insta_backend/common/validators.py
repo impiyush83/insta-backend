@@ -3,7 +3,7 @@ from flask import request, jsonify
 from insta_backend.exceptions.custom_exceptions import \
     RequestValidationException
 from cerberus import Validator as CerberusValidator
-from .utils import parse_date, parse_int, parse_decimal
+from insta_backend.utils import parse_date, parse_int, parse_decimal
 
 
 class Validator(CerberusValidator):

@@ -6,6 +6,8 @@ from decimal import Decimal
 
 from passlib.context import CryptContext
 
+from insta_backend.models.user import User
+
 pwd_context = CryptContext(
     schemes=["pbkdf2_sha256"],
     default="pbkdf2_sha256",
@@ -13,6 +15,14 @@ pwd_context = CryptContext(
 )
 
 date_format = '%Y-%m-%d %H:%M:%S UTC'
+
+
+def jwt_identity(payload):
+    return User.get_by_id(payload)
+
+
+def identity_loader(user):
+    return user.id
 
 
 def parse_date(date_str, _format=date_format):

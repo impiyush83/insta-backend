@@ -1,13 +1,14 @@
+from .extensions import db
 from datetime import datetime
 import inflection
 import sqlalchemy as sa
-from sqlalchemy import Integer, Column, String, ForeignKey
+from sqlalchemy import Integer
 from sqlalchemy.ext.declarative import declared_attr
 
-from insta_backend import Model
 
+Column = db.Column
+Model = db.Model
 
-# COMMON TABLES
 
 class Timestamp:
     created = sa.Column(sa.DateTime, default=datetime.utcnow, nullable=False,
@@ -42,27 +43,3 @@ class Base(HasTablename, SurrogatePK):
     def __repr__(self):
         return '<{model}({id})>'.format(model=self.__class__.__name__,
                                         id=self.id)
-
-
-#  ACTUAL TABLES
-class User(Base, Model, Timestamp):
-    email = Column(String(256), unique=True, index=True)
-
-
-class Follower(Base, Model, Timestamp):
-    follower_id = Column(Integer, ForeignKey('user.id'))
-    followee_id = Column(Integer, ForeignKey('user.id'))
-
-
-class Post(Base, Model, Timestamp):
-    text = Column(String(256))
-    image_url = Column()
-    user_id = Column(Integer, ForeignKey('user.id'))
-
-
-class Comment(Base, Model, Timestamp):
-    pass
-
-
-class Likes(Base, Model, Timestamp):
-    pass

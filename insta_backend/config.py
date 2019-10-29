@@ -14,7 +14,8 @@ class Config:
 
 class ProdConfig(Config):
     DEBUG = False
-
+    HASH_SCHEMES = ['plaintext']
+    HASH_SCHEMES = ['bcrypt_sha256']
 
 class DevConfig(Config):
     DEVELOPMENT = True
@@ -23,6 +24,7 @@ class DevConfig(Config):
         'SQLALCHEMY_DATABASE_URI',
         default='postgresql://insta_user:insta_password@localhost:5432/insta'
     )
+    HASH_SCHEMES = ['plaintext']
 
 
 class TestConfig(Config):
@@ -33,3 +35,4 @@ class TestConfig(Config):
         default='postgresql://insta_user:insta_password@localhost:5432'
                 '/insta_test '
     )
+    HASH_SCHEMES = ['plaintext']
