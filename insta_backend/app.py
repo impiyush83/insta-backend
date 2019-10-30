@@ -3,6 +3,7 @@ from flask import Flask
 from insta_backend.api import restful_api
 from insta_backend.extensions import db, migrate, jwt
 from insta_backend.models import user, post
+from insta_backend.resources.auth.common import bp_auth
 
 
 def create_app(config_object):
@@ -15,7 +16,7 @@ def create_app(config_object):
 
 
 def register_blueprints(app):
-    pass
+    app.register_blueprint(bp_auth)
 
 
 def register_extensions(app):

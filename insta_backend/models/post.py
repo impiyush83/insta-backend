@@ -1,10 +1,7 @@
 from enum import Enum
-
 from depot.fields.specialized.image import UploadedImageWithThumb
 from depot.fields.sqlalchemy import UploadedFileField
 from sqlalchemy import String, Column, Integer, ForeignKey
-from sqlalchemy_utils import ChoiceType
-
 from insta_backend.common.custom_types import EnumChoiceType
 from insta_backend.database import Base, Model, Timestamp
 
