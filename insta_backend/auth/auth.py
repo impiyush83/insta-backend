@@ -6,10 +6,10 @@ from flask import current_app as app
 from insta_backend.exceptions.custom_exceptions import AuthenticationException
 
 
-def encode_auth_token(uuid, entity):
+def encode_auth_token(entity_id, entity):
     """
     Generates the Auth Token
-    :param uuid: string
+    :param entity_id: string
     :param entity: string
     :return: string
     """
@@ -18,14 +18,14 @@ def encode_auth_token(uuid, entity):
         payload = {
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
             'iat': datetime.datetime.utcnow(),
-            'sub': uuid,
-            'entity': entity
+            'entity': entity,
+            'entity_id': entity_id
         }
         return jwt.encode(
             payload,
             app.config.get('SECRET_KEY'),
             algorithm='HS256'
-        )
+        ).decode('utf-8')
     except Exception as e:
         return e
 

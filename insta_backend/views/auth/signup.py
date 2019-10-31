@@ -10,8 +10,6 @@ from insta_backend.utils import encrypt_password
 
 def process_signup(user_payload):
     try:
-        import pdb
-        pdb.set_trace()
         # set default image
         current_directory = os.path.dirname(__file__)
         filename = os.path.join(

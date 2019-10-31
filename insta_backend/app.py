@@ -4,6 +4,7 @@ from insta_backend.extensions import db, migrate, jwt
 from insta_backend.models.post import post
 from insta_backend.models.user import user
 from insta_backend.resources.auth.auth import bp_auth
+from insta_backend.resources.user.follow import bp_user
 
 
 def create_app(config_object):
@@ -13,13 +14,14 @@ def create_app(config_object):
     register_blueprints(app)
     register_shellcontext(app)
     # Configure a *default* depot to store files on MongoDB GridFS
-    print(app.config['DEPOT_MANAGER_CONFIG'])
+    # print(app.config['DEPOT_MANAGER_CONFIG'])
     DepotManager.configure('default', app.config['DEPOT_MANAGER_CONFIG'])
     return app
 
 
 def register_blueprints(app):
     app.register_blueprint(bp_auth)
+    app.register_blueprint(bp_user)
 
 
 def register_extensions(app):
