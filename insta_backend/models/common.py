@@ -14,7 +14,7 @@ class BaseModel:
         return query.all() if limit == 0 else query.limit(limit)
 
     @classmethod
-    def create_record(cls, values):
+    def create_record(cls, **values):
         obj = cls.model(**values)
         db.add(obj)
         db.flush()

@@ -2,6 +2,7 @@ from flask import request, Blueprint
 
 from insta_backend.auth.auth import encode_auth_token
 from insta_backend.exceptions.custom_exceptions import NoResultFound
+from insta_backend.extensions import db
 from insta_backend.models.user.user import User, Entity
 from insta_backend.views.auth.signup import process_signup
 
@@ -24,4 +25,5 @@ def login():
 def signup():
     request_data = request.json
     process_signup(request_data)
+    db.commit()
     return {"message": "Success"}
