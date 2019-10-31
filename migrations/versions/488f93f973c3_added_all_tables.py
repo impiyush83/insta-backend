@@ -1,17 +1,18 @@
-"""Added user, post, like, comment and follower tables
+"""Added all tables
 
-Revision ID: fee6e2627499
+Revision ID: 488f93f973c3
 Revises: 
-Create Date: 2019-10-29 06:04:13.731130
+Create Date: 2019-10-31 05:13:29.981318
 
 """
+import depot
 from alembic import op
 import sqlalchemy as sa
 import sqlalchemy_utils
-import depot
+
 
 # revision identifiers, used by Alembic.
-revision = 'fee6e2627499'
+revision = '488f93f973c3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,8 +27,7 @@ def upgrade():
     sa.Column('email', sa.String(length=256), nullable=True),
     sa.Column('display_picture', depot.fields.sqlalchemy.UploadedFileField(), nullable=True),
     sa.Column('username', sa.String(length=256), nullable=True),
-    sa.Column('password', sa.String(128), nullable=True),
-    sa.Column('last_seen', sa.DateTime(), nullable=True),
+    sa.Column('password', sa.String(length=256), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_user_created'), 'user', ['created'], unique=False)
@@ -51,7 +51,7 @@ def upgrade():
     sa.Column('caption', sa.String(length=256), nullable=True),
     sa.Column('image', depot.fields.sqlalchemy.UploadedFileField(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('status', sa.String(30), nullable=True),
+    sa.Column('status', sa.String(128), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -74,7 +74,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('photo_id', sa.Integer(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('status', sa.String(64), nullable=False),
+    sa.Column('status', sa.String(128), nullable=False),
     sa.ForeignKeyConstraint(['photo_id'], ['post.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')

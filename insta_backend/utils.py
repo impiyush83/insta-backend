@@ -6,7 +6,7 @@ from decimal import Decimal
 
 from passlib.context import CryptContext
 
-from insta_backend.models.user import User
+from insta_backend.models.user.user import User
 
 pwd_context = CryptContext(
     schemes=["pbkdf2_sha256"],

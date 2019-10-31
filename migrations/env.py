@@ -24,7 +24,7 @@ logger = logging.getLogger('alembic.env')
 from flask import current_app
 config.set_main_option(
     'sqlalchemy.url', current_app.config.get(
-        'SQLALCHEMY_DATABASE_URI').replace('%', '%%'))
+        'SQLALCHEMY_DATABASE_URI'))
 target_metadata = current_app.extensions['migrate'].db.metadata
 
 # other values from the config, defined by the needs of env.py,
@@ -42,7 +42,7 @@ def run_migrations_offline():
     we don't even need a DBAPI to be available.
 
     Calls to context.execute() here emit the given string to the
-    script output.
+    script output.<memory at 0x110d37ac8>)
 
     """
     url = config.get_main_option("sqlalchemy.url")
