@@ -3,8 +3,8 @@ from flask import Blueprint, request
 from insta_backend.auth.auth import decode_auth_token
 from insta_backend.exceptions.custom_exceptions import NoResultFound
 from insta_backend.extensions import db
-from insta_backend.models.user.user import Entity
-from insta_backend.models.user.user_methods import FollowerMethods, UserMethods
+from insta_backend.models.user.friendship import FollowerMethods
+from insta_backend.models.user.user import Entity, UserMethods
 
 bp_friendships = Blueprint("friendships", __name__, url_prefix='/friendships')
 

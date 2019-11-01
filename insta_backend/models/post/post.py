@@ -7,11 +7,6 @@ from insta_backend.database import Base, Model, Timestamp
 from insta_backend.models.common import BaseModel
 
 
-class PostType(Enum):
-    PUBLIC = 'public'
-    PRIVATE = 'private'
-
-
 class LikeStatus(Enum):
     ACTIVE = 'active'
     INACTIVE = 'inactive'
@@ -25,8 +20,6 @@ class Post(Base, Model, Timestamp):
         nullable=False
     )
     user_id = Column(Integer, ForeignKey('user.id'))
-    # if public display in common_feed and everyone, else only to subscribed
-    status = Column(EnumChoiceType(PostType, impl=String(30)))
 
 
 class Comment(Base, Model, Timestamp):

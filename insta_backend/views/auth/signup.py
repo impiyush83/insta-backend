@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 
 from insta_backend.exceptions.custom_exceptions import ResourceAlreadyPresent
 from insta_backend.extensions import db
-from insta_backend.models.user.user_methods import UserMethods
+from insta_backend.models.user.user import UserMethods
 from insta_backend.utils import encrypt_password
 
 
