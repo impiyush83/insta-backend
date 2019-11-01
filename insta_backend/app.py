@@ -2,9 +2,10 @@ from flask import Flask
 from depot.manager import DepotManager
 from insta_backend.extensions import db, migrate, jwt
 from insta_backend.models.post import post
-from insta_backend.models.user import user
+from insta_backend.models.user import user, friendship
+# Blueprints
 from insta_backend.resources.auth.auth import bp_auth
-from insta_backend.resources.user.follow import bp_user
+from insta_backend.resources.user.friendships import bp_friendships
 
 
 def create_app(config_object):
@@ -21,7 +22,7 @@ def create_app(config_object):
 
 def register_blueprints(app):
     app.register_blueprint(bp_auth)
-    app.register_blueprint(bp_user)
+    app.register_blueprint(bp_friendships)
 
 
 def register_extensions(app):
@@ -36,7 +37,7 @@ def register_shellcontext(app):
         return {
             'db': db,
             'User': user.User,
-            'Follower': user.Follower,
+            'Follower': friendship.Follower,
             'Post': post.Post,
             'Comment': post.Comment,
             'Like': post.Like,

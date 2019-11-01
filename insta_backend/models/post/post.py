@@ -4,6 +4,7 @@ from depot.fields.sqlalchemy import UploadedFileField
 from sqlalchemy import String, Column, Integer, ForeignKey
 from insta_backend.common.custom_types import EnumChoiceType
 from insta_backend.database import Base, Model, Timestamp
+from insta_backend.models.common import BaseModel
 
 
 class PostType(Enum):
@@ -44,3 +45,9 @@ class Like(Base, Model, Timestamp):
         default=LikeStatus.ACTIVE,
         nullable=False
     )
+
+
+class PostMethods(BaseModel):
+    model = Post
+
+    pass

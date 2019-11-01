@@ -3,13 +3,13 @@ from flask import Blueprint, request
 from insta_backend.auth.auth import decode_auth_token
 from insta_backend.exceptions.custom_exceptions import NoResultFound
 from insta_backend.extensions import db
-from insta_backend.models.user.user import User, Entity
+from insta_backend.models.user.user import Entity
 from insta_backend.models.user.user_methods import FollowerMethods, UserMethods
 
-bp_user = Blueprint("user", __name__, url_prefix='/user')
+bp_friendships = Blueprint("friendships", __name__, url_prefix='/friendships')
 
 
-@bp_user.route('/follow/<followee_username>', methods=['POST'])
+@bp_friendships.route('/<followee_username>/follow', methods=['POST'])
 def follow(followee_username):
     payload = decode_auth_token(
         request.headers.get('access_token'),
@@ -33,7 +33,7 @@ def follow(followee_username):
     return {"message": "Success"}
 
 
-@bp_user.route('/unfollow/<followee_username>', methods=['POST'])
+@bp_friendships.route('<followee_username>/unfollow', methods=['POST'])
 def unfollow(followee_username):
     payload = decode_auth_token(
         request.headers.get('access_token'),

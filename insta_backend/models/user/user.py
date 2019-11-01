@@ -4,21 +4,16 @@ from enum import Enum
 from depot.fields.specialized.image import UploadedImageWithThumb
 from depot.fields.sqlalchemy import UploadedFileField
 from flask import Config
-from sqlalchemy import String, Column, Integer, ForeignKey
+from sqlalchemy import String, Column
 from sqlalchemy.orm import relationship
 
 from insta_backend.database import Base, Model, Timestamp
+from insta_backend.models.common import BaseModel
 
 config_name = 'insta_backend.config.{}Config'.format(
     os.environ.get('INSTA_ENV'))
 config = Config('')
 config.from_object(config_name)
-
-
-class Follower(Base, Model, Timestamp):
-    __tablename__ = "follower"
-    follower_id = Column(Integer, ForeignKey('user.id'))
-    followee_id = Column(Integer, ForeignKey('user.id'))
 
 
 class User(Base, Model, Timestamp):
@@ -33,3 +28,11 @@ class User(Base, Model, Timestamp):
 
 class Entity(Enum):
     USER = 'user'
+
+
+class UserMethods(BaseModel):
+    model = User
+
+    @classmethod
+    def get_user_by_username(cls, username):
+        return db.query(cls.model).filter_by(username=username).first()

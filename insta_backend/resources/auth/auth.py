@@ -7,10 +7,10 @@ from insta_backend.models.user.user import User, Entity
 from insta_backend.utils import check_encrypted_password
 from insta_backend.views.auth.signup import process_signup
 
-bp_auth = Blueprint("auth", __name__, url_prefix='/auth')
+bp_auth = Blueprint("auth", __name__)
 
 
-@bp_auth.route('/login', methods=['GET'])
+@bp_auth.route('/signin', methods=['GET'])
 def login():
     request_data = request.json
     username = request_data.get('username')

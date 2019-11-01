@@ -1,14 +1,14 @@
+from sqlalchemy import Integer, ForeignKey
+
+from insta_backend.database import Base, Model, Timestamp, Column
 from insta_backend.extensions import db
 from insta_backend.models.common import BaseModel
-from insta_backend.models.user.user import User, Follower
 
 
-class UserMethods(BaseModel):
-    model = User
-
-    @classmethod
-    def get_user_by_username(cls, username):
-        return db.query(cls.model).filter_by(username=username).first()
+class Follower(Base, Model, Timestamp):
+    __tablename__ = "follower"
+    follower_id = Column(Integer, ForeignKey('user.id'))
+    followee_id = Column(Integer, ForeignKey('user.id'))
 
 
 class FollowerMethods(BaseModel):
