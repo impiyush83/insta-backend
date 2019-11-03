@@ -1,5 +1,6 @@
 from depot.fields.sqlalchemy import UploadedFileField
 from sqlalchemy import String, Column, Integer, ForeignKey
+from sqlalchemy.orm import relationship
 
 from insta_backend.database import Base, Model, Timestamp
 from insta_backend.extensions import db
@@ -14,6 +15,37 @@ class Post(Base, Model, Timestamp):
         nullable=False
     )
     user_id = Column(Integer, ForeignKey('user.id'))
+    likes = relationship('Like', backref='owner', lazy='dynamic')
+    comments = relationship('Comment', backref='owner', lazy='dynamic')
+
+    @property
+    def total_number_of_likes(self):
+        return len(self.likes)
+
+    @property
+    def post_comments(self):
+        comments = []
+        for comment in self.comments:
+            comment = dict(comment)
+            comments.append(
+                dict(
+                    user_id=comment.get('user_id'),
+                    comment=comment.get('comment')
+                )
+            )
+        return comments
+
+    @property
+    def post_likes(self):
+        likes = []
+        for like in self.likes:
+            like = dict(like)
+            likes.append(
+                dict(
+                    user_id=like.get('user_id')
+                )
+            )
+        return likes
 
 
 class Comment(Base, Model, Timestamp):

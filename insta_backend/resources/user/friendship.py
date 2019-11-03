@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.exceptions import BadRequest, NotFound
-
 from insta_backend.extensions import db
 from insta_backend.models.user.friendship import FollowerMethods, \
     FollowRequestMethods
@@ -31,12 +30,13 @@ def follow(followee_username):
     if not FollowerMethods.is_following(follower_user.id, followee_user.id):
         if followee_user.status.value == "public":
             FollowerMethods.follow(follower_user.id, followee_user.id)
+            db.commit()
+            return jsonify({"message": "Successfully followed"}), 200
         else:
             FollowRequestMethods.send_follow_request(follower_user.id,
                                                      followee_user.id)
-
-    db.commit()
-    return jsonify({"message": "Successfully followed"}), 200
+            db.commit()
+            return jsonify({"message": "Follow request sent"}), 200
 
 
 @bp_friendship.route('<followee_username>/unfollow', methods=['POST'])
@@ -73,8 +73,8 @@ def follow_requests():
         request_list.append(
             dict(
                 requestor_id=request_item.follower_id,
-                follow_accept_url='/friendships/request/accept/' + request_item.follower_id,
-                follow_decline_url='/friendships/request/decline/' + request_item.follower_id
+                follow_accept_url='/friendships/request/accept/' + str(request_item.follower_id),
+                follow_decline_url='/friendships/request/decline/' + str(request_item.follower_id)
             )
         )
     response = dict(requestors=request_list)
@@ -88,6 +88,7 @@ def accept_follow_request(follower_id):
     if not FollowerMethods.is_following(follower_id, followee_user.id):
         FollowRequestMethods.remove_request(follower_id, followee_user.id)
         FollowerMethods.follow(follower_id, followee_user.id)
+        db.commit()
     return jsonify({"message": "Follow request accepted"}), 200
 
 
@@ -96,4 +97,5 @@ def decline_follow_request(follower_id):
     followee_user = generate_user_from_auth_token(
         request.headers.get('access-token'))
     FollowRequestMethods.remove_request(follower_id, followee_user.id)
+    db.commit()
     return jsonify({"message": "Follow request declined"}), 200
