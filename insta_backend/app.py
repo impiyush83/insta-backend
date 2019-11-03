@@ -9,7 +9,7 @@ from insta_backend.models.user import user, friendship
 from insta_backend.resources.auth.auth import bp_auth
 from insta_backend.resources.feed.feed import bp_feed
 from insta_backend.resources.post.post import bp_post
-from insta_backend.resources.user.friendship import bp_friendship
+from insta_backend.resources.user.friendship import bp_friendship, bp_requestors
 from insta_backend.resources.user.user import bp_user
 from insta_backend.utils import get_http_exception_handler
 
@@ -37,6 +37,7 @@ def register_blueprints(app):
     app.register_blueprint(bp_post)
     app.register_blueprint(bp_feed)
     app.register_blueprint(bp_user)
+    app.register_blueprint(bp_requestors)
 
 
 def register_extensions(app):
@@ -55,6 +56,7 @@ def register_shellcontext(app):
             'Post': post.Post,
             'Comment': post.Comment,
             'Like': post.Like,
+            'FollowRequests': friendship.FollowRequest
         }
 
     app.shell_context_processor(shell_context)

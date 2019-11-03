@@ -38,3 +38,34 @@ class FollowerMethods(BaseModel):
         if entry:
             return True
         return False
+
+
+class FollowRequest(Base, Model, Timestamp):
+    __tablename__ = "follow_request"
+
+    follower_id = Column(Integer, ForeignKey('user.id'))
+    followee_id = Column(Integer, ForeignKey('user.id'))
+
+
+class FollowRequestMethods(BaseModel):
+    model = FollowRequest
+
+    @classmethod
+    def send_follow_request(cls, follower_id, followee_id):
+        cls.create_record(
+            **dict(
+                followee_id=followee_id,
+                follower_id=follower_id)
+        )
+
+    @classmethod
+    def get_follow_requests(cls, followee_id):
+        return db.query(cls.model).filter(
+            cls.model.followee_id == followee_id).all()
+
+    @classmethod
+    def remove_request(cls, follower_id, followee_id):
+        db.query(cls.model).filter(
+            cls.model.followee_id == followee_id,
+            cls.model.follower_id == follower_id
+        ).delete()

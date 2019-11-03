@@ -39,7 +39,7 @@ class User(Base, Model, Timestamp):
     def all_posts(self):
         posts = []
         for post in self.posts:
-            posts.append(dict(post))
+            posts.append("/"+self.username+"/posts/"+post.id)
         return posts
 
 

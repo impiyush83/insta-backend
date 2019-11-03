@@ -22,6 +22,7 @@ def user_profile(username):
         username=profile_user.username,
         display_picture=dict(profile_user.display_picture)
     )
+    #  HATEOS CONCEPT USED FOR POSTS
     # no circular checking
     if current_user.username != username:
         # check if following

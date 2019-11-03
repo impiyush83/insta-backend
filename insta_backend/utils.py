@@ -8,7 +8,8 @@ from functools import wraps
 from flask import jsonify
 from passlib.context import CryptContext
 
-from insta_backend.models.user.user import User
+from insta_backend.auth.auth import decode_auth_token
+from insta_backend.models.user.user import User, Entity, UserMethods
 
 pwd_context = CryptContext(
     schemes=["pbkdf2_sha256"],
@@ -89,3 +90,13 @@ def get_http_exception_handler(app):
         return jsonify({'code': exc.code, 'message': exc.description}), exc.code
 
     return ret_val
+
+
+def generate_user_from_auth_token(auth_token):
+    payload = decode_auth_token(
+        auth_token,
+        Entity.USER.value
+    )
+    current_username = payload.get('entity_id')
+    current_user = UserMethods.get_user_by_username(current_username)
+    return current_user
