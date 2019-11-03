@@ -1,11 +1,17 @@
 from flask import Flask
 from depot.manager import DepotManager
+
+
 from insta_backend.extensions import db, migrate, jwt
 from insta_backend.models.post import post
 from insta_backend.models.user import user, friendship
 # Blueprints
 from insta_backend.resources.auth.auth import bp_auth
-from insta_backend.resources.user.friendships import bp_friendships
+from insta_backend.resources.feed.feed import bp_feed
+from insta_backend.resources.post.post import bp_post
+from insta_backend.resources.user.friendship import bp_friendship
+from insta_backend.resources.user.user import bp_user
+from insta_backend.utils import get_http_exception_handler
 
 
 def create_app(config_object):
@@ -17,12 +23,20 @@ def create_app(config_object):
     # Configure a *default* depot to store files on MongoDB GridFS
     # print(app.config['DEPOT_MANAGER_CONFIG'])
     DepotManager.configure('default', app.config['DEPOT_MANAGER_CONFIG'])
+
+    # Override the HTTP exception handler.
+    # magic snippet
+    app.handle_http_exception = get_http_exception_handler(app)
+
     return app
 
 
 def register_blueprints(app):
     app.register_blueprint(bp_auth)
-    app.register_blueprint(bp_friendships)
+    app.register_blueprint(bp_friendship)
+    app.register_blueprint(bp_post)
+    app.register_blueprint(bp_feed)
+    app.register_blueprint(bp_user)
 
 
 def register_extensions(app):
@@ -42,5 +56,8 @@ def register_shellcontext(app):
             'Comment': post.Comment,
             'Like': post.Like,
         }
+
     app.shell_context_processor(shell_context)
+
+
 ''

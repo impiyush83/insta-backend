@@ -2,8 +2,7 @@ import datetime
 
 import jwt
 from flask import current_app as app
-
-from insta_backend.exceptions.custom_exceptions import AuthenticationException
+from werkzeug.exceptions import Unauthorized
 
 
 def encode_auth_token(entity_id, entity):
@@ -45,8 +44,7 @@ def decode_auth_token(auth_token, entity):
         )
         if payload.get('entity') == entity:
             return payload
-        raise AuthenticationException("Invalid authentication token")
     except jwt.ExpiredSignatureError as e:
-        raise AuthenticationException("Expired authentication token")
+        raise Unauthorized("Expired authentication token")
     except jwt.InvalidTokenError:
-        raise AuthenticationException("Invalid authentication token")
+        raise Unauthorized("Invalid authentication token")

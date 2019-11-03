@@ -1,7 +1,7 @@
-from flask import request, Blueprint
+from flask import request, Blueprint, jsonify
+from werkzeug.exceptions import NotFound
 
 from insta_backend.auth.auth import encode_auth_token
-from insta_backend.exceptions.custom_exceptions import NoResultFound
 from insta_backend.extensions import db
 from insta_backend.models.user.user import User, Entity
 from insta_backend.utils import check_encrypted_password
@@ -17,9 +17,9 @@ def login():
     password = request_data.get('password')
     user = db.query(User).filter(User.username == username).first()
     if user is None or not check_encrypted_password(password, user.password):
-        raise NoResultFound("User not found with the entered credentials")
+        raise NotFound("User not found with the entered credentials")
     token = encode_auth_token(user.username, Entity.USER.value)
-    return {"auth_token": token}
+    return jsonify({"auth_token": token}), 200
 
 
 @bp_auth.route('/signup', methods=['POST'])
@@ -27,4 +27,4 @@ def signup():
     request_data = request.json
     process_signup(request_data)
     db.commit()
-    return {"message": "Success"}
+    return jsonify({"message": "Success"}), 200

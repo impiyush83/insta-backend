@@ -3,7 +3,9 @@ import random
 import string
 import uuid
 from decimal import Decimal
+from functools import wraps
 
+from flask import jsonify
 from passlib.context import CryptContext
 
 from insta_backend.models.user.user import User
@@ -74,3 +76,16 @@ def generate_uuid():
 
 def secret_key_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
+
+
+# overrides httpexception inbuilt to give a json respsonse
+def get_http_exception_handler(app):
+    """Overrides the default http exception handler to return JSON."""
+    handle_http_exception = app.handle_http_exception
+
+    @wraps(handle_http_exception)
+    def ret_val(exception):
+        exc = handle_http_exception(exception)
+        return jsonify({'code': exc.code, 'message': exc.description}), exc.code
+
+    return ret_val

@@ -1,8 +1,8 @@
 import os
 
 from sqlalchemy.exc import IntegrityError
+from werkzeug.exceptions import Conflict
 
-from insta_backend.exceptions.custom_exceptions import ResourceAlreadyPresent
 from insta_backend.extensions import db
 from insta_backend.models.user.user import UserMethods
 from insta_backend.utils import encrypt_password
@@ -22,4 +22,4 @@ def process_signup(user_payload):
         UserMethods.create_record(**user_payload)
     except IntegrityError:
         db.session.rollback()
-        raise ResourceAlreadyPresent("User already registered")
+        raise Conflict("User already registered")

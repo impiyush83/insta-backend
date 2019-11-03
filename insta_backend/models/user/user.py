@@ -1,7 +1,6 @@
 import os
 from enum import Enum
 
-from depot.fields.specialized.image import UploadedImageWithThumb
 from depot.fields.sqlalchemy import UploadedFileField
 from flask import Config
 from sqlalchemy import String, Column
@@ -27,12 +26,21 @@ class User(Base, Model, Timestamp):
     __tablename__ = "user"
     email = Column(String(256), unique=True, index=True)
     display_picture = Column(
-        UploadedFileField(upload_type=UploadedImageWithThumb))
+        UploadedFileField())
+    name = Column(String(256), nullable=False)
     username = Column(String(256), unique=True, index=True)
     password = Column(String(256), nullable=False)
     # if public display in common_feed and everyone, else only to subscribed
-    status = Column(EnumChoiceType(UserType, impl=String(30)))
+    status = Column(EnumChoiceType(UserType, impl=String(30)), index=True,
+                    nullable=False)
     posts = relationship('Post', backref='owner', lazy='dynamic')
+
+    @property
+    def all_posts(self):
+        posts = []
+        for post in self.posts:
+            posts.append(dict(post))
+        return posts
 
 
 class Entity(Enum):
