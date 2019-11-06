@@ -70,3 +70,19 @@ class PostMethods(BaseModel):
         # gives 10 results as default is 10 in paginate method
         return db.query(Post).order_by(Post.created.desc()).paginate(
             page=page)
+
+
+class CommentMethods(BaseModel):
+    model = Comment
+
+
+class LikeMethods(BaseModel):
+    model = Like
+
+    @classmethod
+    def delete_record(cls, photo_id, user_id):
+        try:
+            db.query(cls.model).filter(cls.model.photo_id == photo_id,
+                                       cls.model.user_id == user_id).delete()
+        except Exception as e:
+            pass
