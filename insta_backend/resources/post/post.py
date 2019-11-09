@@ -1,6 +1,7 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app as app
+import json
 from werkzeug.exceptions import NotFound
-from insta_backend.extensions import db
+from insta_backend.extensions import db, redis_client
 from insta_backend.models.post.post import PostMethods
 from insta_backend.models.user.friendship import FollowerMethods
 from insta_backend.models.user.user import UserMethods
@@ -15,12 +16,21 @@ def create_new_post():
         request.headers.get('access-token'))
     request_data = request.form
     image = request.files.getlist('image')[0]
-    PostMethods.create_record(
-        **dict(caption=request_data.get('caption'),
-               image=image,
-               user_id=current_user.id
-               )
+    post_data = dict(caption=request_data.get('caption'),
+                image=image,
+                user_id=current_user.id
+                )
+    post = PostMethods.create_record(
+        **post_data
     )
+    # put in redis list
+    post_data['image'] = post.image._public_url
+    total_user_posts = redis_client.lrange(current_user.username, 0, -1)
+    if len(total_user_posts) == int(app.config.get('MAX_REDIS_CACHED_POSTS')):
+        redis_client.rpop()
+
+    redis_client.lpush(current_user.username, json.dumps(post_data))
+
     db.commit()
     return jsonify({"message": "Hurray your post is on its way !!"}), 200
 

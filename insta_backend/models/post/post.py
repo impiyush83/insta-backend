@@ -1,7 +1,7 @@
 from depot.fields.sqlalchemy import UploadedFileField
 from sqlalchemy import String, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-
+from flask import current_app as app
 from insta_backend.database import Base, Model, Timestamp
 from insta_backend.extensions import db
 from insta_backend.models.common import BaseModel
@@ -69,7 +69,7 @@ class PostMethods(BaseModel):
         page = int(page)
         # gives 10 results as default is 10 in paginate method
         return db.query(Post).order_by(Post.created.desc()).paginate(
-            page=page)
+            page=page, per_page=int(app.config.get('MAX_POSTS_PER_PAGE')))
 
 
 class CommentMethods(BaseModel):

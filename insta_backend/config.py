@@ -15,6 +15,8 @@ class Config:
         default='postgresql://insta_user:insta_password@localhost:5432/insta'
     )
     DEPOT_MANAGER_CONFIG = {'depot.storage_path': '/static/media'}
+    MAX_POSTS_PER_PAGE = os.environ.get("MAX_POSTS_PER_PAGE", "10")
+    MAX_REDIS_CACHED_POSTS = os.environ.get('MAX_REDIS_CACHED_POSTS', "10")
 
 
 class ProdConfig(Config):

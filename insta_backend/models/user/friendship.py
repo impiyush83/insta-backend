@@ -39,6 +39,12 @@ class FollowerMethods(BaseModel):
             return True
         return False
 
+    @classmethod
+    def get_followees(cls, user_id):
+        return db.query(cls.model).filter(Follower.follower_id == user_id).all()
+
+
+
 
 class FollowRequest(Base, Model, Timestamp):
     __tablename__ = "follow_request"
