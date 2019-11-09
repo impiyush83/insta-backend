@@ -11,6 +11,7 @@ from insta_backend.utils import generate_user_from_auth_token
 bp_feed = Blueprint("feed", __name__)
 
 
+# Fetch followees posts from redis
 @bp_feed.route('/', methods=['GET'])
 def custom_feed():
     auth_token = request.headers.get('access_token')
@@ -23,6 +24,27 @@ def custom_feed():
         user_posts = redis_client.lrange(user.username, 0, -1)
         for post in user_posts:
             posts.append(json.loads(post))
+    return jsonify({"posts": posts})
+
+
+# Fetch followees posts from database
+@bp_feed.route('/feed', methods=['GET'])
+def feed():
+    auth_token = request.headers.get('access_token')
+    current_user = generate_user_from_auth_token(auth_token)
+    #  HIT REDIS FOR ALL POSTS RELATED TO
+    followees = FollowerMethods.get_followees(current_user.id)
+    posts = []
+    for followee in followees:
+        user = UserMethods.get_record_with_id(followee.followee_id)
+        for post in user.posts:
+            posts.append(
+                dict(
+                    caption=post.caption,
+                    image=post.image._public_url,
+                    user_id=post.user_id
+                )
+            )
     return jsonify({"posts": posts})
 
 
