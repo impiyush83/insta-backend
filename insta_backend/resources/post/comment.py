@@ -1,15 +1,16 @@
-from flask import request, jsonify
+from flask import request, jsonify, Blueprint
 from werkzeug.exceptions import NotFound
 
 from insta_backend.extensions import db
 from insta_backend.models.post.post import PostMethods, CommentMethods
 from insta_backend.models.user.friendship import FollowerMethods
 from insta_backend.models.user.user import UserMethods
-from insta_backend.resources.post.post import bp_post
 from insta_backend.utils import generate_user_from_auth_token
 
+bp_comment = Blueprint("comments", __name__)
 
-@bp_post.route('/<username>/posts/<post_id>/comment', methods=['POST'])
+
+@bp_comment.route('/<username>/posts/<post_id>/comment', methods=['POST'])
 def comment_on_post(username, post_id):
     current_user = generate_user_from_auth_token(
         request.headers.get('access-token'))

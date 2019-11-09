@@ -17,14 +17,16 @@ def create_new_post():
     request_data = request.form
     image = request.files.getlist('image')[0]
     post_data = dict(caption=request_data.get('caption'),
-                image=image,
-                user_id=current_user.id
-                )
+                     image=image,
+                     user_id=current_user.id
+                     )
     post = PostMethods.create_record(
         **post_data
     )
     # put in redis list
     post_data['image'] = post.image._public_url
+    post_data['post_id'] = post.id
+    post_data['username'] = current_user.username
     total_user_posts = redis_client.lrange(current_user.username, 0, -1)
     if len(total_user_posts) == int(app.config.get('MAX_REDIS_CACHED_POSTS')):
         redis_client.rpop()
@@ -50,7 +52,11 @@ def get_user_post(username, post_id):
         comments = post.post_comments
         like_count = post.total_number_of_likes
         likes = post.post_likes
-        response = dict(post=post, comments=comments, like_count=like_count,
+        post_data = dict(
+            caption=post.caption,
+            image=post.image._public_url,
+            post_id=post.id, user_id=post.user_id)
+        response = dict(post=post_data, comments=comments, like_count=like_count,
                         likes=likes)
         return jsonify(response)
     else:

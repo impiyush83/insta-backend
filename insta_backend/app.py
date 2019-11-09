@@ -8,6 +8,8 @@ from insta_backend.models.user import user, friendship
 # Blueprints
 from insta_backend.resources.auth.auth import bp_auth
 from insta_backend.resources.feed.feed import bp_feed
+from insta_backend.resources.post.comment import bp_comment
+from insta_backend.resources.post.like import bp_like
 from insta_backend.resources.post.post import bp_post
 from insta_backend.resources.user.friendship import bp_friendship, bp_requestors
 from insta_backend.resources.user.user import bp_user
@@ -38,6 +40,8 @@ def register_blueprints(app):
     app.register_blueprint(bp_feed)
     app.register_blueprint(bp_user)
     app.register_blueprint(bp_requestors)
+    app.register_blueprint(bp_like)
+    app.register_blueprint(bp_comment)
 
 
 def register_extensions(app):

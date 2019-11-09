@@ -20,7 +20,10 @@ class Post(Base, Model, Timestamp):
 
     @property
     def total_number_of_likes(self):
-        return len(self.likes)
+        like_count = 0
+        for _ in self.likes:
+            like_count += 1
+        return like_count
 
     @property
     def post_comments(self):
