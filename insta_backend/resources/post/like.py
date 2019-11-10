@@ -35,7 +35,7 @@ def like_action_on_post(username, post_id):
         ), 400
 
 
-@bp_like.route('/<username>/posts/<post_id>/unlike', methods=['POST'])
+@bp_like.route('/<username>/posts/<post_id>/like', methods=['DELETE'])
 def unlike_action_on_post(username, post_id):
     current_user = generate_user_from_auth_token(
         request.headers.get('access-token'))
