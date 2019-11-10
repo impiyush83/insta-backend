@@ -20,7 +20,9 @@ class Config:
 
 
 class ProdConfig(Config):
+    INSTA_ENV=os.environ.get('INSTA_ENV', 'Prod')
     DEBUG = False
+
     DEPOT_MANAGER_CONFIG = {'depot.backend': 'depot.io.boto3.S3Storage',
                             'depot.access_key_id': os.environ.get(
                                 'AWS_ACCESS_KEY',
@@ -33,6 +35,7 @@ class ProdConfig(Config):
 
 
 class DevConfig(Config):
+    INSTA_ENV = os.environ.get('INSTA_ENV', 'Dev')
     DEVELOPMENT = True
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
@@ -47,11 +50,12 @@ class DevConfig(Config):
                             'depot.secret_access_key': os.environ.get(
                                 'AWS_SECRET_KEY', None),
                             'depot.bucket': 'insta-backend-' +
-                                            os.environ.get('INSTA_ENV').lower(),
+                                            INSTA_ENV.lower(),
                             'depot.region_name': 'ap-south-1'}
 
 
 class TestConfig(Config):
+    INSTA_ENV = os.environ.get('INSTA_ENV', 'Test')
     TESTING = True
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
