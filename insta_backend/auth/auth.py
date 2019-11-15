@@ -44,7 +44,7 @@ def decode_auth_token(auth_token, entity):
         )
         if payload.get('entity') == entity:
             return payload
-    except jwt.ExpiredSignatureError as e:
+    except jwt.ExpiredSignatureError:
         raise Unauthorized("Expired authentication token")
     except jwt.InvalidTokenError:
         raise Unauthorized("Invalid authentication token")

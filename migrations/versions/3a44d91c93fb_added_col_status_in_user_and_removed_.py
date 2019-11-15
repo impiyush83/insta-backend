@@ -7,10 +7,8 @@ Create Date: 2019-11-01 11:29:15.430744
 """
 from alembic import op
 import sqlalchemy as sa
-import sqlalchemy_utils
 
 # revision identifiers, used by Alembic.
-import insta_backend
 
 revision = '3a44d91c93fb'
 down_revision = '488f93f973c3'

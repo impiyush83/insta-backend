@@ -64,6 +64,3 @@ def register_shellcontext(app):
         }
 
     app.shell_context_processor(shell_context)
-
-
-''

@@ -87,5 +87,5 @@ class LikeMethods(BaseModel):
         try:
             db.query(cls.model).filter(cls.model.photo_id == photo_id,
                                        cls.model.user_id == user_id).delete()
-        except Exception as e:
+        except Exception:
             pass

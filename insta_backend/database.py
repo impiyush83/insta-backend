@@ -36,8 +36,8 @@ class HasTablename:
 
 
 class Base(HasTablename, SurrogatePK):
-    def update_attributes(self, dict):
-        for name, value in list(dict.items()):
+    def update_attributes(self, dicto):
+        for name, value in list(dicto.items()):
             setattr(self, name, value)
 
     def __repr__(self):
