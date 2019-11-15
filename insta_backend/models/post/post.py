@@ -2,6 +2,7 @@ from depot.fields.sqlalchemy import UploadedFileField
 from sqlalchemy import String, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from flask import current_app as app
+from werkzeug.exceptions import BadRequest
 from insta_backend.database import Base, Model, Timestamp
 from insta_backend.extensions import db
 from insta_backend.models.common import BaseModel
@@ -88,4 +89,4 @@ class LikeMethods(BaseModel):
             db.query(cls.model).filter(cls.model.photo_id == photo_id,
                                        cls.model.user_id == user_id).delete()
         except Exception:
-            pass
+            raise BadRequest('Like cannot be deleted')
