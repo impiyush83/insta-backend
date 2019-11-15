@@ -1,4 +1,5 @@
 # INSTA-BACKEND SERVICE
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/747141aacd1f44e1b6f7d64a8c80452f)](https://www.codacy.com/manual/impiyush83/insta-backend?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=impiyush83/insta-backend&amp;utm_campaign=Badge_Grade)
 
 This is backend as a service built to implement instagram like service where one can follow other users, share photos, like photos and comment on photos.   
 
