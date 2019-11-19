@@ -61,8 +61,8 @@ class TestFriendshipRequests:
             Follower.follower_id == follower_id,
             Follower.followee_id == followee_id,
         ).first()
-        assert follow_entry.followee_id, is_(followee_id)
-        assert follow_entry.follower_id, is_(follower_id)
+        assert_that(follow_entry.followee_id, is_(followee_id))
+        assert_that(follow_entry.follower_id, is_(follower_id))
 
         unfollow_user(follower_id, followee_id)
 
