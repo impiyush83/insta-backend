@@ -1,6 +1,4 @@
 from flask import Flask
-from depot.manager import DepotManager
-
 
 from insta_backend.extensions import db, migrate, jwt
 from insta_backend.models.post import post

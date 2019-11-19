@@ -1,4 +1,4 @@
-from factory import Sequence, SubFactory
+from factory import Sequence
 from factory.alchemy import SQLAlchemyModelFactory
 
 from insta_backend.extensions import db

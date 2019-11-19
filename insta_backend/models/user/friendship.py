@@ -1,5 +1,4 @@
 from sqlalchemy import Integer, ForeignKey
-from werkzeug.exceptions import Conflict
 
 from insta_backend.database import Base, Model, Timestamp, Column
 from insta_backend.extensions import db
