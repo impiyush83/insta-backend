@@ -5,6 +5,9 @@ from insta_backend.models.user.friendship import FollowerMethods, \
     FollowRequestMethods
 from insta_backend.models.user.user import UserMethods
 from insta_backend.utils import generate_user_from_auth_token
+from insta_backend.views.friendship.friendship import accept_follow_requests, \
+    decline_follow_requests, send_follow_request, follow_public_user, \
+    unfollow_user
 
 bp_friendship = Blueprint("friendships", __name__, url_prefix='/friendships')
 bp_requestors = Blueprint("requestors", __name__)
@@ -29,12 +32,12 @@ def follow(followee_username):
     # check if not follows
     if not FollowerMethods.is_following(follower_user.id, followee_user.id):
         if followee_user.status.value == "public":
-            FollowerMethods.follow(follower_user.id, followee_user.id)
+            follow_public_user(follower_user.id, followee_user.id)
             db.commit()
             return jsonify({"message": "Successfully followed"}), 200
         else:
-            FollowRequestMethods.send_follow_request(follower_user.id,
-                                                     followee_user.id)
+            send_follow_request(follower_user.id,
+                                followee_user.id)
             db.commit()
             return jsonify({"message": "Follow request sent"}), 200
 
@@ -56,7 +59,7 @@ def unfollow(followee_username):
 
     # check if it follows
     if FollowerMethods.is_following(follower_user.id, followee_user.id):
-        FollowerMethods.unfollow(follower_user.id, followee_user.id)
+        unfollow_user(follower_user.id, followee_user.id)
 
     db.commit()
     return jsonify({"message": "Successfully unfollowed"}), 200
@@ -73,8 +76,10 @@ def follow_requests():
         request_list.append(
             dict(
                 requestor_id=request_item.follower_id,
-                follow_accept_url='/friendships/request/accept/' + str(request_item.follower_id),
-                follow_decline_url='/friendships/request/decline/' + str(request_item.follower_id)
+                follow_accept_url='/friendships/request/accept/' + str(
+                    request_item.follower_id),
+                follow_decline_url='/friendships/request/decline/' + str(
+                    request_item.follower_id)
             )
         )
     response = dict(requestors=request_list)
@@ -85,10 +90,8 @@ def follow_requests():
 def accept_follow_request(follower_id):
     followee_user = generate_user_from_auth_token(
         request.headers.get('access-token'))
-    if not FollowerMethods.is_following(follower_id, followee_user.id):
-        FollowRequestMethods.remove_request(follower_id, followee_user.id)
-        FollowerMethods.follow(follower_id, followee_user.id)
-        db.commit()
+    accept_follow_requests(follower_id, followee_user.id)
+    db.commit()
     return jsonify({"message": "Follow request accepted"}), 200
 
 
@@ -96,6 +99,6 @@ def accept_follow_request(follower_id):
 def decline_follow_request(follower_id):
     followee_user = generate_user_from_auth_token(
         request.headers.get('access-token'))
-    FollowRequestMethods.remove_request(follower_id, followee_user.id)
+    decline_follow_requests(follower_id, followee_user.id)
     db.commit()
     return jsonify({"message": "Follow request declined"}), 200

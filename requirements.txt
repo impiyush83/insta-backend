@@ -1,5 +1,2 @@
-pytest
-Grinder-Webtest
-boto3
 # Just installs the production requirements.
 -r requirements/prod.txt

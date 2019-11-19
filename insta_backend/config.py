@@ -60,6 +60,7 @@ class TestConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'SQLALCHEMY_DATABASE_URI',
-        default='postgresql://insta_user:insta_password@localhost:5432'
-                '/insta_test '
+        default='postgresql://insta_user:insta_password@localhost:5432/insta_test'
     )
+    IMAGE_DIR_PATH = './insta-backend/static/public/media/'
+    DEPOT_MANAGER_CONFIG = {'depot.storage_path': IMAGE_DIR_PATH}

@@ -1,4 +1,5 @@
 from sqlalchemy import Integer, ForeignKey
+from werkzeug.exceptions import Conflict
 
 from insta_backend.database import Base, Model, Timestamp, Column
 from insta_backend.extensions import db
@@ -42,8 +43,6 @@ class FollowerMethods(BaseModel):
     @classmethod
     def get_followees(cls, user_id):
         return db.query(cls.model).filter(Follower.follower_id == user_id).all()
-
-
 
 
 class FollowRequest(Base, Model, Timestamp):

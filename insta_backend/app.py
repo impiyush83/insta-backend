@@ -24,7 +24,7 @@ def create_app(config_object):
     register_shellcontext(app)
     # Configure a *default* depot to store files on MongoDB GridFS
     # print(app.config['DEPOT_MANAGER_CONFIG'])
-    DepotManager.configure('default', app.config['DEPOT_MANAGER_CONFIG'])
+    # DepotManager.configure('default', app.config['DEPOT_MANAGER_CONFIG'])
 
     # Override the HTTP exception handler.
     # magic snippet
