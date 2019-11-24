@@ -4,10 +4,8 @@ import string
 import uuid
 from decimal import Decimal
 from functools import wraps
-
 from flask import jsonify
 from passlib.context import CryptContext
-
 from insta_backend.auth.auth import decode_auth_token
 from insta_backend.models.user.user import User, Entity, UserMethods
 
