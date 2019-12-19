@@ -83,6 +83,5 @@ This is backend as a service built to implement instagram like service where one
 
     ```
     pytest tests -W ignore::DeprecationWarning
-       
     ```
    
