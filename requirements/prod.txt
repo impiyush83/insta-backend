@@ -19,7 +19,7 @@ packaging==19.2
 passlib==1.7.2
 pluggy==0.13.1
 py==1.8.0
-PyJWT==1.7.1
+PyJWT==2.4.0
 pyparsing==2.4.5
 python-dateutil==2.8.1
 python-editor==1.0.4
